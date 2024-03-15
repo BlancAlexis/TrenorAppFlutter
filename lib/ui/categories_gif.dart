@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'data/CategoryModel.dart';
-import 'data/repo.dart';
+import '../domain/repository/tenor_repository_impl.dart';
 
 class CategorizedTrend extends StatefulWidget {
   const CategorizedTrend({super.key});
@@ -23,7 +22,8 @@ class _CategorizedTrend extends State<CategorizedTrend> {
             } else if (projectSnap.hasError) {
               return Text('Error: ${projectSnap.error}');
             }
-            final categories = projectSnap.data ?? List.empty(); // TODO a refaire
+            final categories =
+                projectSnap.data ?? List.empty(); // TODO a refaire
             return CustomScrollView(
               slivers: <Widget>[
                 SliverGrid(
@@ -38,13 +38,12 @@ class _CategorizedTrend extends State<CategorizedTrend> {
                       return Container(
                         alignment: Alignment.center,
                         color: Colors.teal[100 * (index % 9)],
-                        child:
-                          Column(
-                            children: [
-                              Image.network(categories[index].image),
-                      Text('grid item $index'),
-                            ],
-                          ),
+                        child: Column(
+                          children: [
+                            Image.network(categories[index].image),
+                            Text('grid item $index'),
+                          ],
+                        ),
                       );
                     },
                     childCount: categories.length,

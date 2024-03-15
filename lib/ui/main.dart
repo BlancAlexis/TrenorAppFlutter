@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'categorizedTrend.dart';
-import 'detailsPage.dart';
-import 'homePage.dart';
+import 'categories_gif.dart';
+import 'home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -33,16 +34,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-int _currentIndex=0;
+  int _currentIndex = 0;
 
-final List<Widget> _tabs = [
-  HomePage(),
-  CategorizedTrend(),
-];
+  final List<Widget> _tabs = [
+    HomePage(),
+    CategorizedTrend(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     const tmdbApiKey = String.fromEnvironment('TENOR_API_KEY');
- /*   if (tmdbApiKey.isEmpty) {
+    /*   if (tmdbApiKey.isEmpty) {
       throw AssertionError('TMDB_KEY is not set');
     }*/
     return Scaffold(

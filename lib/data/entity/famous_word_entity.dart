@@ -1,6 +1,6 @@
-import 'package:tenor/data/FamousWord.dart';
+import 'package:tenor/data/Model/famous_word_model.dart';
 
-class FamousWordEntity{
+class FamousWordEntity {
   String famousWord;
 
   FamousWordEntity({required this.famousWord});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tenor/data/repo.dart';
+
+import '../domain/repository/tenor_repository_impl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,9 +27,10 @@ class _DetailsPage extends State<HomePage> {
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       final word = famousWords[index];
-                      return Text('Item: ${word.famousWord}'); // Assuming word is a string
+                      return Text(
+                          'Item: ${word.famousWord}'); // Assuming word is a string
                     },
                     childCount: famousWords.length,
                   ),
