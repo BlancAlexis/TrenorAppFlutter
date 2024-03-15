@@ -13,7 +13,7 @@ class FamousWordDetailsEntity {
   factory FamousWordDetailsEntity.fromJSON(Map<String, dynamic> jsonData) {
     String title = jsonData['title'];
     String contentDescription = jsonData['content_description'];
-    String image = jsonData['image'];
+    String image = jsonData['url'];
     return FamousWordDetailsEntity(
         title: title, image: image, contentDescription: contentDescription);
   }

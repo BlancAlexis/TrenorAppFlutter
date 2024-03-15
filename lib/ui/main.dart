@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tenor/ui/search_gif_page.dart';
 
 import 'categories_gif.dart';
 import 'home_page.dart';
@@ -39,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _tabs = [
     HomePage(),
     CategorizedTrend(),
+    SearchGifPage(),
   ];
 
   @override
@@ -67,6 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.category),
             label: 'Catégorie',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_crash),
+            label: 'Search',
           ),
         ],
       ),
