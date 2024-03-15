@@ -5,10 +5,11 @@ import 'package:tenor/data/FamousWord.dart';
 import 'package:tenor/data/FamousWordDetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:tenor/data/FamousWordEntity.dart';
+import 'package:tenor/data/tenor_endpoint.dart';
 
 abstract class getTenorRepo {
   Future<List<CategoryModel>> getAllGifCategory();
-  Future<Map<String, dynamic>> getAllFamousWord();
+  Future<List<FamousWordModel>> getAllFamousWord();
   Future<List<FamousWordDetails>> getDetailsAboutFamousWord();
 }
 const apiKey = String.fromEnvironment('TENOR_API_KEY', defaultValue: 'clef_default');
@@ -22,15 +23,8 @@ class getTenorRepoImpl extends getTenorRepo{
   }
 
   @override
-  Future<Map<String, dynamic>> getAllFamousWord() async {
-    final httpPackageResponse = await http.get(Uri.parse('https://g.tenor.com/v2/trending_terms?key=AIzaSyD3U57ytKdya6GPPGspReBnXNdjobSQLJc'));
-    if (httpPackageResponse.statusCode != 200) {
-      print('Failed to retrieve the http package!');
-      return {};
-    }
-   Map<String, dynamic>.from(json.decode(httpPackageResponse.body))["results"].forEach((key, value) {
-     FamousWordEntity(famousWord: value);
-   });
+  Future<List<FamousWordModel>> getAllFamousWord() async {
+  return (await TenorEndpointImpl().getAllFamousWord()).map((e) => e.toModel()).toList();
 
 
   }

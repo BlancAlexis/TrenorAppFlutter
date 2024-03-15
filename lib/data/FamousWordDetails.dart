@@ -1,3 +1,6 @@
-class FamousWordDetails {
+class FamousWordDetailsModel {
+
+}
+class FamousWordDetailsEntity {
 
 }

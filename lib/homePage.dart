@@ -21,14 +21,14 @@ class _DetailsPage extends State<HomePage> {
             } else if (projectSnap.hasError) {
               return Text('Error: ${projectSnap.error}');
             }
-            final famousWords = projectSnap.data ?? {};
+            final famousWords = projectSnap.data ?? List.empty();
             return CustomScrollView(
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                      final word = famousWords.values.elementAt(index);
-                      return Text('Item: $word'); // Assuming word is a string
+                      final word = famousWords[index];
+                      return Text('Item: ${word.famousWord}'); // Assuming word is a string
                     },
                     childCount: famousWords.length,
                   ),
