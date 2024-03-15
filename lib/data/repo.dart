@@ -10,7 +10,7 @@ import 'package:tenor/data/tenor_endpoint.dart';
 abstract class getTenorRepo {
   Future<List<CategoryModel>> getAllGifCategory();
   Future<List<FamousWordModel>> getAllFamousWord();
-  Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord();
+  Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord(String query);
 }
 const apiKey = String.fromEnvironment('TENOR_API_KEY', defaultValue: 'clef_default');
 
@@ -29,10 +29,8 @@ class getTenorRepoImpl extends getTenorRepo{
   }
 
   @override
-  Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord() {
-
-    // TODO: implement getAllGifCategory
-    throw UnimplementedError();
+  Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord(String query) async {
+    return (await TenorEndpointImpl().getDetailsAboutFamousWord(query)).map((e) => e.toModel()).toList();
   }
 
 }
