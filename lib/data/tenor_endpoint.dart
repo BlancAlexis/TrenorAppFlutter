@@ -26,7 +26,7 @@ class TenorEndpointImpl extends TenorEndpoint {
       return List.empty();
     }
     Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
-    return (valueDecode["results"] as List).map((value) => CategoryEntity.fromJSON(value)).toList();
+    return (valueDecode["tags"] as List).map((value) => CategoryEntity.fromJSON(value)).toList();
   }
 
   @override
