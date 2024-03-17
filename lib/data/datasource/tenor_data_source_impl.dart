@@ -10,10 +10,18 @@ import '../Entity/famous_word_details_entity.dart';
 import '../Entity/famous_word_entity.dart';
 
 class TenorDataSourceImpl extends TenorDataSource {
+
+  static const tenorApiKey = String.fromEnvironment('TENOR_API_KEY');
+
+
   @override
   Future<List<FamousWordEntity>> getAllFamousWord() async {
+    if(tenorApiKey.isEmpty){
+      print('no API key');
+      return List.empty();
+    }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/trending_terms?key=AIzaSyD3U57ytKdya6GPPGspReBnXNdjobSQLJc'));
+        'https://g.tenor.com/v2/trending_terms?key=$tenorApiKey'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -26,8 +34,12 @@ class TenorDataSourceImpl extends TenorDataSource {
 
   @override
   Future<List<CategoryEntity>> getAllGifCategory() async {
+    if(tenorApiKey.isEmpty){
+      print('no API key');
+      return List.empty();
+    }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/categories?key=AIzaSyD3U57ytKdya6GPPGspReBnXNdjobSQLJc'));
+        'https://g.tenor.com/v2/categories?key=$tenorApiKey'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -41,8 +53,12 @@ class TenorDataSourceImpl extends TenorDataSource {
   @override
   Future<List<FamousWordDetailsEntity>> getDetailsAboutFamousWord(
       String query) async {
+    if(tenorApiKey.isEmpty){
+      print('no API key');
+      return List.empty();
+    }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/search?q=$query&key=AIzaSyD3U57ytKdya6GPPGspReBnXNdjobSQLJc'));
+        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();

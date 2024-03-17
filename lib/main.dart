@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tenor/ui/search_gif_page.dart';
 
-import 'categories_gif.dart';
-import 'home_page.dart';
+import 'ui/categories_gif.dart';
+import 'ui/home_page.dart';
 
 void main() {
   runApp(const MyApp());
