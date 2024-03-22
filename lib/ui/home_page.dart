@@ -10,6 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _DetailsPage extends State<HomePage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +25,39 @@ class _DetailsPage extends State<HomePage> {
             }
             final famousWords = projectSnap.data ?? List.empty();
             return CustomScrollView(
-              slivers: [
+              slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Allahackbar', textAlign: TextAlign.center ),
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final word = famousWords[index];
-                      return Text(
-                          'Item: ${word.famousWord}'); // Assuming word is a string
+                      return GestureDetector(
+                        onTap: (){
+                          print('tap');
+                        },
+                        child: SizedBox(
+                          height: 300,
+                          width: 300,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.blue,
+                                width: 2223,
+                              ),
+                              borderRadius: BorderRadius.circular(1), //<-- SEE HERE
+                            ),
+                            color: Colors.deepOrangeAccent,
+                            elevation: 8,
+                            child: Text(
+                                'Item: ${word.famousWord}'),
+                          ),
+                        ),
+                      ); // Assuming word is a string
                     },
                     childCount: famousWords.length,
                   ),

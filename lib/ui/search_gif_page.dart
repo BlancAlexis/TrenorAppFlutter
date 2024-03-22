@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/Model/famous_word_details_model.dart';
 import '../domain/repository/tenor_repository_impl.dart';
+import 'PaginationScrollListener.dart';
 
 class SearchGifPage extends StatefulWidget {
   const SearchGifPage({super.key});
@@ -11,18 +12,37 @@ class SearchGifPage extends StatefulWidget {
 }
 
 class _SearchGifPage extends State<SearchGifPage> {
+  PaginationScrollController paginationScrollController =
+  PaginationScrollController();
+
   final textViewSearch = TextEditingController();
   List<FamousWordDetailsModel> listFamousGif = [];
 
+  Future<void> _getNextPage() async {
+    try {
+      final response = await getTenorRepoImpl().getDetailsAboutFamousWord(textViewSearch.text);
+      setState(() {
+        listFamousGif.addAll(response); // Update list
+      });
+    } catch (error) {
+      // Handle error here (e.g., print error message, show a snackbar)
+      print('Error fetching data: $error');
+    }
+  }
   @override
   void initState() {
     super.initState();
+    paginationScrollController.init(
+        loadAction: () async => {
+          await _getNextPage() }
+    );
     textViewSearch.addListener(prout);
   }
 
   @override
   void dispose() {
     textViewSearch.dispose();
+    paginationScrollController.dispose();
     super.dispose();
   }
 
@@ -39,6 +59,7 @@ class _SearchGifPage extends State<SearchGifPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: CustomScrollView(
+          controller: paginationScrollController.scrollController,
           slivers: <Widget>[
             SliverToBoxAdapter(
               child: Padding(

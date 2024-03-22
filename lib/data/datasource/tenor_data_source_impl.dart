@@ -12,16 +12,16 @@ import '../Entity/famous_word_entity.dart';
 class TenorDataSourceImpl extends TenorDataSource {
 
   static const tenorApiKey = String.fromEnvironment('TENOR_API_KEY');
+  static const MAX_LIMIT = 10;
 
 
   @override
   Future<List<FamousWordEntity>> getAllFamousWord() async {
-    if(tenorApiKey.isEmpty){
-      print('no API key');
+    if(checkIfApiKeyIsEmpty()){
       return List.empty();
     }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/trending_terms?key=$tenorApiKey'));
+        'https://g.tenor.com/v2/trending_terms?key=$tenorApiKey&limit=$MAX_LIMIT'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -34,8 +34,7 @@ class TenorDataSourceImpl extends TenorDataSource {
 
   @override
   Future<List<CategoryEntity>> getAllGifCategory() async {
-    if(tenorApiKey.isEmpty){
-      print('no API key');
+    if(checkIfApiKeyIsEmpty()){
       return List.empty();
     }
     final httpPackageResponse = await http.get(Uri.parse(
@@ -53,12 +52,12 @@ class TenorDataSourceImpl extends TenorDataSource {
   @override
   Future<List<FamousWordDetailsEntity>> getDetailsAboutFamousWord(
       String query) async {
-    if(tenorApiKey.isEmpty){
-      print('no API key');
+    print("dfze");
+    if(checkIfApiKeyIsEmpty()){
       return List.empty();
     }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey'));
+        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey&limit=$MAX_LIMIT'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -67,5 +66,13 @@ class TenorDataSourceImpl extends TenorDataSource {
     return (valueDecode["results"] as List)
         .map((value) => FamousWordDetailsEntity.fromJSON(value))
         .toList();
+  }
+
+  bool checkIfApiKeyIsEmpty(){
+    if(tenorApiKey.isEmpty){
+      print('API KEY is empty');
+      return true;
+    }
+    return false;
   }
 }

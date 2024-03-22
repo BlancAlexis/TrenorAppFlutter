@@ -23,7 +23,7 @@ class _CategorizedTrend extends State<CategorizedTrend> {
               return Text('Error: ${projectSnap.error}');
             }
             final categories =
-                projectSnap.data ?? List.empty(); // TODO a refaire
+                projectSnap.data ?? List.empty();
             return CustomScrollView(
               slivers: <Widget>[
                 SliverGrid(
@@ -41,7 +41,7 @@ class _CategorizedTrend extends State<CategorizedTrend> {
                         child: Column(
                           children: [
                             Image.network(categories[index].image),
-                            Text('grid item $index'),
+                            Text('${categories[index].name}'),
                           ],
                         ),
                       );
