@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tenor/ui/search_gif_page.dart';
 
 import '../domain/repository/tenor_repository_impl.dart';
 
@@ -35,15 +36,42 @@ class _CategorizedTrend extends State<CategorizedTrend> {
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        color: Colors.teal[100 * (index % 9)],
-                        child: Column(
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchGifPage(
+                                selectedCategory: categories[index].name,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
                           children: [
-                            Image.network(categories[index].image),
-                            Text('${categories[index].name}'),
+                            Image.network(
+                              categories[index].image,
+                              fit: BoxFit.cover,
+                            ),
+                            Text(
+                              '${categories[index].name}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2.0, 2.0),
+                                    blurRadius: 4.0,
+                                    color: Colors.black.withOpacity(0.5),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
+
                       );
                     },
                     childCount: categories.length,

@@ -8,4 +8,6 @@ abstract class getTenorRepo {
   Future<List<FamousWordModel>> getAllFamousWord();
 
   Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord(String query);
+
+  Future<List<FamousWordDetailsModel>> getNextDetailsAboutFamousWord(String query);
 }

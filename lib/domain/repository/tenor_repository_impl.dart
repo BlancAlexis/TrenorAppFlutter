@@ -27,4 +27,12 @@ class getTenorRepoImpl extends getTenorRepo {
         .map((e) => e.toModel())
         .toList();
   }
+
+  @override
+  Future<List<FamousWordDetailsModel>> getNextDetailsAboutFamousWord(
+      String query) async {
+    return (await TenorDataSourceImpl().getNextDetailsAboutFamousWord(query))
+        .map((e) => e.toModel())
+        .toList();
+  }
 }

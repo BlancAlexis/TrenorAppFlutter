@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../data/Model/famous_word_details_model.dart';
 import '../domain/repository/tenor_repository_impl.dart';
-import 'PaginationScrollListener.dart';
+import 'paginate_scroll_listener.dart';
 
 class SearchGifPage extends StatefulWidget {
-  const SearchGifPage({super.key});
+  const SearchGifPage({super.key, this.selectedCategory});
 
+  final String? selectedCategory;
   @override
   State<SearchGifPage> createState() => _SearchGifPage();
 }
@@ -18,9 +19,10 @@ class _SearchGifPage extends State<SearchGifPage> {
   final textViewSearch = TextEditingController();
   List<FamousWordDetailsModel> listFamousGif = [];
 
+
   Future<void> _getNextPage() async {
     try {
-      final response = await getTenorRepoImpl().getDetailsAboutFamousWord(textViewSearch.text);
+      final response = await getTenorRepoImpl().getNextDetailsAboutFamousWord(textViewSearch.text);
       setState(() {
         listFamousGif.addAll(response); // Update list
       });
@@ -36,7 +38,12 @@ class _SearchGifPage extends State<SearchGifPage> {
         loadAction: () async => {
           await _getNextPage() }
     );
-    textViewSearch.addListener(prout);
+    textViewSearch.addListener(checkText);
+
+    if (widget.selectedCategory != null) {
+      textViewSearch.text = widget.selectedCategory!.substring(1);
+      _getNextPage(); // Lancer la recherche avec la catégorie
+    }
   }
 
   @override
@@ -46,7 +53,7 @@ class _SearchGifPage extends State<SearchGifPage> {
     super.dispose();
   }
 
-  void prout() async{
+  void checkText() async{
     if (textViewSearch.text.isNotEmpty &&textViewSearch.text.length > 2 ) {
       final response= await getTenorRepoImpl().getDetailsAboutFamousWord(textViewSearch.text);
       setState(() {
@@ -67,9 +74,9 @@ class _SearchGifPage extends State<SearchGifPage> {
                 child: TextField(
                   controller: textViewSearch,
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: 'Entrez votre valeur en binaire',
-                    hintText: '01110',
+                  decoration: const InputDecoration(
+                    labelText: 'Entrez votre mot',
+                    hintText: 'Recherche',
                   ),
                 ),
               ),
@@ -86,12 +93,8 @@ class _SearchGifPage extends State<SearchGifPage> {
                   return Container(
                     alignment: Alignment.center,
                     color: Colors.teal[100 * (index % 9)],
-                    child: Column(
-                      children: [
-                        Image.network(listFamousGif[index].image),
-                        Text('grid item $index'),
-                      ],
-                    ),
+                    child:
+                        Image.network(listFamousGif[index].image, fit: BoxFit.cover),
                   );
                 },
                 childCount: listFamousGif.length,

@@ -18,6 +18,15 @@ class FamousWordDetailsEntity {
         title: title, image: image, contentDescription: contentDescription);
   }
 
+  factory FamousWordDetailsEntity.fromJSONQuery(Map<String, dynamic> jsonData) {
+    String title = jsonData['title'];
+    String contentDescription = jsonData['content_description'];
+    Map<String, dynamic> mediaFormats = jsonData['media_formats'];
+    String image = mediaFormats['gif']['url'];
+    return FamousWordDetailsEntity(
+        title: title, image: image, contentDescription: contentDescription);
+  }
+
   FamousWordDetailsModel toModel() {
     return FamousWordDetailsModel(
         title: title, image: image, contentDescription: contentDescription);

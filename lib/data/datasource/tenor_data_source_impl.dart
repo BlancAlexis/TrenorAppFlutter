@@ -13,6 +13,7 @@ class TenorDataSourceImpl extends TenorDataSource {
 
   static const tenorApiKey = String.fromEnvironment('TENOR_API_KEY');
   static const MAX_LIMIT = 10;
+  static String NEXT = "";
 
 
   @override
@@ -52,7 +53,6 @@ class TenorDataSourceImpl extends TenorDataSource {
   @override
   Future<List<FamousWordDetailsEntity>> getDetailsAboutFamousWord(
       String query) async {
-    print("dfze");
     if(checkIfApiKeyIsEmpty()){
       return List.empty();
     }
@@ -63,8 +63,27 @@ class TenorDataSourceImpl extends TenorDataSource {
       return List.empty();
     }
     Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
+    NEXT = valueDecode['next'];
     return (valueDecode["results"] as List)
-        .map((value) => FamousWordDetailsEntity.fromJSON(value))
+        .map((value) => FamousWordDetailsEntity.fromJSONQuery(value))
+        .toList();
+  }
+  @override
+  Future<List<FamousWordDetailsEntity>> getNextDetailsAboutFamousWord(
+      String query) async {
+    if(checkIfApiKeyIsEmpty()){
+      return List.empty();
+    }
+    final httpPackageResponse = await http.get(Uri.parse(
+        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey&limit=$MAX_LIMIT&pos=$NEXT'));
+    if (httpPackageResponse.statusCode != 200) {
+      print('Failed to retrieve the http package!');
+      return List.empty();
+    }
+    Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
+    NEXT = valueDecode['next'];
+    return (valueDecode["results"] as List)
+        .map((value) => FamousWordDetailsEntity.fromJSONQuery(value))
         .toList();
   }
 

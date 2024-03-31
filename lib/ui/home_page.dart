@@ -26,12 +26,6 @@ class _DetailsPage extends State<HomePage> {
             final famousWords = projectSnap.data ?? List.empty();
             return CustomScrollView(
               slivers: <Widget>[
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Allahackbar', textAlign: TextAlign.center ),
-                  ),
-                ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -45,7 +39,7 @@ class _DetailsPage extends State<HomePage> {
                           width: 300,
                           child: Card(
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: Colors.blue,
                                 width: 2223,
                               ),

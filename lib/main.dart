@@ -38,17 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    HomePage(),
-    CategorizedTrend(),
-    SearchGifPage(),
+    const HomePage(),
+    const CategorizedTrend(),
+    const SearchGifPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    const tmdbApiKey = String.fromEnvironment('TENOR_API_KEY');
-    /*   if (tmdbApiKey.isEmpty) {
-      throw AssertionError('TMDB_KEY is not set');
-    }*/
     return Scaffold(
       appBar: AppBar(
         title: Text('Flut'),

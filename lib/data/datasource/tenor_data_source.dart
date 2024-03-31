@@ -8,4 +8,6 @@ abstract class TenorDataSource {
   Future<List<CategoryEntity>> getAllGifCategory();
 
   Future<List<FamousWordDetailsEntity>> getDetailsAboutFamousWord(String query);
+
+  Future<List<FamousWordDetailsEntity>> getNextDetailsAboutFamousWord(String query);
 }
