@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tenor/ui/search_gif_page.dart';
 
 import '../domain/repository/tenor_repository_impl.dart';
 
@@ -10,13 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _DetailsPage extends State<HomePage> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: getTenorRepoImpl().getAllFamousWord(),
+          future: TenorRepositoryImpl().getAllFamousWord(),
           builder: (context, projectSnap) {
             if (projectSnap.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -26,29 +26,41 @@ class _DetailsPage extends State<HomePage> {
             final famousWords = projectSnap.data ?? List.empty();
             return CustomScrollView(
               slivers: <Widget>[
+                const SliverAppBar(
+                  title: Center(child: Text('Mots en vogues de la journée')),
+                  backgroundColor: Colors.blueGrey,
+                  expandedHeight: 20.0,
+                ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final word = famousWords[index];
                       return GestureDetector(
-                        onTap: (){
-                          print('tap');
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchGifPage(
+                                selectedCategory: word.famousWord,
+                              ),
+                            ),
+                          );
                         },
                         child: SizedBox(
-                          height: 300,
-                          width: 300,
+                          height: 30,
+                          width: 10,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
                                 color: Colors.blue,
-                                width: 2223,
                               ),
-                              borderRadius: BorderRadius.circular(1), //<-- SEE HERE
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            color: Colors.deepOrangeAccent,
+                            color: Colors.blue,
                             elevation: 8,
-                            child: Text(
-                                'Item: ${word.famousWord}'),
+                            child: Center(
+                              child: Text(word.famousWord),
+                            ),
                           ),
                         ),
                       ); // Assuming word is a string

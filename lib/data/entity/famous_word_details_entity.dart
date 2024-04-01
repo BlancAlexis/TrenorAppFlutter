@@ -18,7 +18,8 @@ class FamousWordDetailsEntity {
         title: title, image: image, contentDescription: contentDescription);
   }
 
-  factory FamousWordDetailsEntity.fromJSONQuery(Map<String, dynamic> jsonData) {
+  factory FamousWordDetailsEntity.fromSpecifSearchResponseJSON(
+      Map<String, dynamic> jsonData) {
     String title = jsonData['title'];
     String contentDescription = jsonData['content_description'];
     Map<String, dynamic> mediaFormats = jsonData['media_formats'];

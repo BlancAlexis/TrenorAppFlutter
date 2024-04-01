@@ -5,7 +5,7 @@ import '../../data/Model/famous_word_details_model.dart';
 import '../../data/Model/famous_word_model.dart';
 import '../../data/datasource/tenor_data_source_impl.dart';
 
-class getTenorRepoImpl extends getTenorRepo {
+class TenorRepositoryImpl extends TenorRepository {
   @override
   Future<List<CategoryModel>> getAllGifCategory() async {
     return (await TenorDataSourceImpl().getAllGifCategory())
@@ -23,7 +23,7 @@ class getTenorRepoImpl extends getTenorRepo {
   @override
   Future<List<FamousWordDetailsModel>> getDetailsAboutFamousWord(
       String query) async {
-    return (await TenorDataSourceImpl().getDetailsAboutFamousWord(query))
+    return (await TenorDataSourceImpl().getSpecificGifWithString(query))
         .map((e) => e.toModel())
         .toList();
   }

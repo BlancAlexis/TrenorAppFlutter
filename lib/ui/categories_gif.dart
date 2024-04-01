@@ -16,15 +16,14 @@ class _CategorizedTrend extends State<CategorizedTrend> {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: getTenorRepoImpl().getAllGifCategory(),
+          future: TenorRepositoryImpl().getAllGifCategory(),
           builder: (context, projectSnap) {
             if (projectSnap.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (projectSnap.hasError) {
               return Text('Error: ${projectSnap.error}');
             }
-            final categories =
-                projectSnap.data ?? List.empty();
+            final categories = projectSnap.data ?? List.empty();
             return CustomScrollView(
               slivers: <Widget>[
                 SliverGrid(
@@ -71,7 +70,6 @@ class _CategorizedTrend extends State<CategorizedTrend> {
                             ),
                           ],
                         ),
-
                       );
                     },
                     childCount: categories.length,

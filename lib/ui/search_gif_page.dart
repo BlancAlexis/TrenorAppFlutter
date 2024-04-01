@@ -8,21 +8,22 @@ class SearchGifPage extends StatefulWidget {
   const SearchGifPage({super.key, this.selectedCategory});
 
   final String? selectedCategory;
+
   @override
   State<SearchGifPage> createState() => _SearchGifPage();
 }
 
 class _SearchGifPage extends State<SearchGifPage> {
   PaginationScrollController paginationScrollController =
-  PaginationScrollController();
+      PaginationScrollController();
 
   final textViewSearch = TextEditingController();
   List<FamousWordDetailsModel> listFamousGif = [];
 
-
   Future<void> _getNextPage() async {
     try {
-      final response = await getTenorRepoImpl().getNextDetailsAboutFamousWord(textViewSearch.text);
+      final response = await TenorRepositoryImpl()
+          .getNextDetailsAboutFamousWord(textViewSearch.text);
       setState(() {
         listFamousGif.addAll(response); // Update list
       });
@@ -31,13 +32,12 @@ class _SearchGifPage extends State<SearchGifPage> {
       print('Error fetching data: $error');
     }
   }
+
   @override
   void initState() {
     super.initState();
     paginationScrollController.init(
-        loadAction: () async => {
-          await _getNextPage() }
-    );
+        loadAction: () async => {await _getNextPage()});
     textViewSearch.addListener(checkText);
 
     if (widget.selectedCategory != null) {
@@ -53,54 +53,54 @@ class _SearchGifPage extends State<SearchGifPage> {
     super.dispose();
   }
 
-  void checkText() async{
-    if (textViewSearch.text.isNotEmpty &&textViewSearch.text.length > 2 ) {
-      final response= await getTenorRepoImpl().getDetailsAboutFamousWord(textViewSearch.text);
+  void checkText() async {
+    if (textViewSearch.text.isNotEmpty && textViewSearch.text.length > 2) {
+      final response = await TenorRepositoryImpl()
+          .getDetailsAboutFamousWord(textViewSearch.text);
       setState(() {
         listFamousGif.addAll(response);
       });
     }
-     }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: CustomScrollView(
-          controller: paginationScrollController.scrollController,
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: textViewSearch,
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Entrez votre mot',
-                    hintText: 'Recherche',
-                  ),
-                ),
-              ),
-            ) ,
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200.0,
-                mainAxisSpacing: 10.0,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: 1,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    color: Colors.teal[100 * (index % 9)],
-                    child:
-                        Image.network(listFamousGif[index].image, fit: BoxFit.cover),
-                  );
-                },
-                childCount: listFamousGif.length,
+      controller: paginationScrollController.scrollController,
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: textViewSearch,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                labelText: 'Entrez votre mot',
+                hintText: 'Recherche',
               ),
             ),
-          ],
-        ));
+          ),
+        ),
+        SliverGrid(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200.0,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                color: Colors.transparent,
+                child: Image.network(listFamousGif[index].image,
+                    fit: BoxFit.cover),
+              );
+            },
+            childCount: listFamousGif.length,
+          ),
+        ),
+      ],
+    ));
   }
 }

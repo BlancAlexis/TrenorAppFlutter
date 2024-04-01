@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutmerde'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flut'),
+        title: Text('TenorFlut'),
       ),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Catégorie',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.car_crash),
+            icon: Icon(Icons.search),
             label: 'Search',
           ),
         ],

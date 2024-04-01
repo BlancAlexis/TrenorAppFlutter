@@ -10,19 +10,18 @@ import '../Entity/famous_word_details_entity.dart';
 import '../Entity/famous_word_entity.dart';
 
 class TenorDataSourceImpl extends TenorDataSource {
-
   static const tenorApiKey = String.fromEnvironment('TENOR_API_KEY');
-  static const MAX_LIMIT = 10;
-  static String NEXT = "";
-
+  static const baseUrl = "https://g.tenor.com";
+  static const maxLimit = 10;
+  static String nextPage = "";
 
   @override
   Future<List<FamousWordEntity>> getAllFamousWord() async {
-    if(checkIfApiKeyIsEmpty()){
+    if (checkIfApiKeyIsEmpty()) {
       return List.empty();
     }
-    final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/trending_terms?key=$tenorApiKey&limit=$MAX_LIMIT'));
+    final httpPackageResponse = await http
+        .get(Uri.parse('$baseUrl/v2/trending_terms?key=$tenorApiKey'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -35,11 +34,11 @@ class TenorDataSourceImpl extends TenorDataSource {
 
   @override
   Future<List<CategoryEntity>> getAllGifCategory() async {
-    if(checkIfApiKeyIsEmpty()){
+    if (checkIfApiKeyIsEmpty()) {
       return List.empty();
     }
-    final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/categories?key=$tenorApiKey'));
+    final httpPackageResponse =
+        await http.get(Uri.parse('$baseUrl/v2/categories?key=$tenorApiKey'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
@@ -51,44 +50,47 @@ class TenorDataSourceImpl extends TenorDataSource {
   }
 
   @override
-  Future<List<FamousWordDetailsEntity>> getDetailsAboutFamousWord(
+  Future<List<FamousWordDetailsEntity>> getSpecificGifWithString(
       String query) async {
-    if(checkIfApiKeyIsEmpty()){
+    if (checkIfApiKeyIsEmpty()) {
       return List.empty();
     }
     final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey&limit=$MAX_LIMIT'));
+        '$baseUrl/v2/search?q=$query&key=$tenorApiKey&limit=$maxLimit'));
     if (httpPackageResponse.statusCode != 200) {
       print('Failed to retrieve the http package!');
       return List.empty();
     }
     Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
-    NEXT = valueDecode['next'];
+    nextPage = valueDecode['next'];
     return (valueDecode["results"] as List)
-        .map((value) => FamousWordDetailsEntity.fromJSONQuery(value))
-        .toList();
-  }
-  @override
-  Future<List<FamousWordDetailsEntity>> getNextDetailsAboutFamousWord(
-      String query) async {
-    if(checkIfApiKeyIsEmpty()){
-      return List.empty();
-    }
-    final httpPackageResponse = await http.get(Uri.parse(
-        'https://g.tenor.com/v2/search?q=$query&key=$tenorApiKey&limit=$MAX_LIMIT&pos=$NEXT'));
-    if (httpPackageResponse.statusCode != 200) {
-      print('Failed to retrieve the http package!');
-      return List.empty();
-    }
-    Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
-    NEXT = valueDecode['next'];
-    return (valueDecode["results"] as List)
-        .map((value) => FamousWordDetailsEntity.fromJSONQuery(value))
+        .map((value) =>
+            FamousWordDetailsEntity.fromSpecifSearchResponseJSON(value))
         .toList();
   }
 
-  bool checkIfApiKeyIsEmpty(){
-    if(tenorApiKey.isEmpty){
+  @override
+  Future<List<FamousWordDetailsEntity>> getNextDetailsAboutFamousWord(
+      String query) async {
+    if (checkIfApiKeyIsEmpty()) {
+      return List.empty();
+    }
+    final httpPackageResponse = await http.get(Uri.parse(
+        '$baseUrl/v2/search?q=$query&key=$tenorApiKey&limit=$maxLimit&pos=$nextPage'));
+    if (httpPackageResponse.statusCode != 200) {
+      print('Failed to retrieve the http package!');
+      return List.empty();
+    }
+    Map<String, dynamic> valueDecode = json.decode(httpPackageResponse.body);
+    nextPage = valueDecode['next'];
+    return (valueDecode["results"] as List)
+        .map((value) =>
+            FamousWordDetailsEntity.fromSpecifSearchResponseJSON(value))
+        .toList();
+  }
+
+  bool checkIfApiKeyIsEmpty() {
+    if (tenorApiKey.isEmpty) {
       print('API KEY is empty');
       return true;
     }
